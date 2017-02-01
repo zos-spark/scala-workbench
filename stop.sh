@@ -1,5 +1,5 @@
 #!/bin/bash
-# (c) Copyright IBM Corp. 2016.  All Rights Reserved.
+# (c) Copyright IBM Corp. 2017.  All Rights Reserved.
 # Distributed under the terms of the Modified BSD License.
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"

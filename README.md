@@ -1,5 +1,8 @@
 # Scala Workbench for IBM z/OS Platform for Apache Spark
 
+<!-- (c) Copyright IBM Corp. 2017.  All Rights Reserved.
+     Distributed under the terms of the Modified BSD License. -->
+
 The Scala Workbench for IBM z/OS Platform for Apache Spark is based on [Project Jupyter](https://jupyter.org/).
 
 This README demonstrates how to build the workbench as a Docker image, and how to run the workbench image as a Docker container on a Linux platform to drive work to an IBM z/OS Platform for Apache Spark cluster version 2.x.
