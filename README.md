@@ -62,7 +62,7 @@ http://www.ibm.com/developerworks/java/jdk/spark/index.html .
 ```
 
 ### Build the Workbench
-* cd to the scala-wb directory
+* cd to the scala-workbench directory
 * Run the build tool.  This will create a Docker image containing a Jupyter server and the Toree kernel
 ```
       ./build.sh 2>&1 | tee build.log
@@ -70,7 +70,7 @@ http://www.ibm.com/developerworks/java/jdk/spark/index.html .
 
 ### Move the Workbench Image to the Runtime Platform
 Now that the Docker image for the workbench is built, it's time to take the image behind the firewall and onto the platform where it will run.
-* Determine the image-id of zspark202/loz-scala-wb (note [image-id])
+* Determine the image-id of zspark202/loz-scala-workbench (note [image-id])
 ```
       docker images
 ```
@@ -94,7 +94,7 @@ The runtime environment requires the same Scala Workbench infrastructure (althou
 Since the runtime environment is behind a firewall, It's likely more convenient to download the zip file for the package, rather than cloning it.  Use the **Download ZIP** link from the **Clone or Download** button on the github site.
 * Transfer the Scala Workbench zip file to the runtime platform
 * Unzip the file in a well-known location
-* cd to the scala-wb directory
+* cd to the scala-workbench directory
 * Edit the file named **config**.  This has all of the settings needed to configure the Scala Workbench to drive work to your target Spark cluster.  Set the values that correspond to your Spark environment.
 
 ### Start the Scala Workbench
