@@ -1,3 +1,5 @@
+# (c) Copyright IBM Corp. 2017.  All Rights Reserved.
+# Distributed under the terms of the Modified BSD License.
 # A base Ubuntu 16.04 build that runs on z #
 FROM s390x/ubuntu
 USER root
@@ -50,27 +52,17 @@ RUN chown -R $NB_USER:users /home/$NB_USER/.jupyter
 # Scala-Workbench Steps #
 ## Setup Java ##
 RUN mkdir -p /opt/ibm/java
-COPY files/ibm-java-s390x-sdk-8.0-3.22.bin /opt/ibm/java/ibm-java-s390x-sdk-8.0-3.22.bin
+COPY files/ibm-java-s390x-sdk-8.0-3.12.bin /opt/ibm/java/ibm-java-s390x-sdk-8.0-3.12.bin
 COPY files/installer.properties.java /opt/ibm/java/installer.properties
 RUN chmod -R 755 /opt/ibm/java
 WORKDIR /opt/ibm/java
-RUN ./ibm-java-s390x-sdk-8.0-3.22.bin -f installer.properties
+RUN ./ibm-java-s390x-sdk-8.0-3.12.bin -f installer.properties
 RUN rm -Rf /usr/lib/jvm/default-java
 RUN mkdir -p /usr/lib/jvm/default-java
 RUN ln -s /opt/ibm/java/* /usr/lib/jvm/default-java
 RUN update-alternatives --install "/usr/bin/javac" "javac" "/usr/lib/jvm/default-java/bin/javac" 9999
 RUN update-alternatives --install "/usr/bin/java" "java" "/usr/lib/jvm/default-java/bin/java" 9999
 RUN update-alternatives --set java /usr/lib/jvm/default-java/bin/java
-
-## Scaffold Spark install
-# WORKDIR /usr/local/spark-2.0.2
-# COPY files/spark-2.0.2-bin-2.7.3.pax /usr/local/spark-2.0.2/spark-2.0.2-bin-2.7.3.pax
-# RUN pax -rvf spark-2.0.2-bin-2.7.3.pax
-# ENV SPARK_HOME=/usr/local/spark-2.0.2
-# WORKDIR /home/$NB_USER/
-# COPY files/IBM_Spark_DK_2.0.2.0_Linux_AMD64.tgz /home/$NB_USER/IBM_Spark_DK_2.0.2.0_Linux_AMD64.tgz
-# RUN tar -xvzf /home/$NB_USER/IBM_Spark_DK_2.0.2.0_Linux_AMD64.tgz -C /home/$NB_USER
-# ENV SPARK_HOME=/home/$NB_USER/spark-dk-2.0.2.0/spark
 
 ## Get Apache Spark Hadoop tar and extract it ##
 WORKDIR /usr/local

@@ -2,24 +2,38 @@
 # (c) Copyright IBM Corp. 2017.  All Rights Reserved.
 # Distributed under the terms of the Modified BSD License.
 
-# Settings for the Spark cluster on z/OS
+# Values for the Spark cluster on z/OS
 SPARK_HOST=${SPARK_HOST:=""}
 SPARK_PORT=${SPARK_PORT:="7077"}
 SPARK_CPUS=${SPARK_CPUS:="2"}
 SPARK_MEM=${SPARK_MEM:="1g"}
 SPARK_USER=${SPARK_USER:="jovyan"}
-SPARK_ADDITIONAL_CONF=${SPARK_ADDITIONAL_CONF:=""}
+SPARK_ADDITIONALCONF=${SPARK_ADDITIONALCONF:=""}
 
-# Settings for the local workbook
-WORKBOOK_IP=${WORKBOOK_IP:=""}
-WORKBOOK_PORT=${WORKBOOK_PORT:="8888"}
-WORKBOOK_NAME=${WORKBOOK_NAME:=""}
+# SSL OPTIONS
+#SPARK_SECURITY=${SPARK_SECURITY:="yes"}
+#SPARK_SECRET=${SPARK_SECRET:="this_is_a_secret_to_everyone"}
+#SPARK_KEYSTORE=${SPARK_KEYSTORE:=".keystore"}
+#SPARK_KEYSTORE_PATH=${SPARK_KEYSTORE_PATH:="/path/to/keystore/dir"}
+#SPARK_KEYSTORE_LOCAL=${SPARK_KEYSTORE_LOCAL:="keystore"}
+#SPARK_KEYSTORE_PASS=${SPARK_KEYSTORE_PASS:="examplestorepass"}
+#SPARK_TRUSTSTORE=${SPARK_TRUSTSTORE:=".truststore"}
+#SPARK_TRUSTSTORE_PATH=${SPARK_TRUSTSTORE_PATH:="/path/to/truststore/dir"}
+#SPARK_TRUSTSTORE_LOCAL=${SPARK_TRUSTSTORE_LOCAL:="truststore"}
+#SPARK_TRUSTSTORE_PASS=${SPARK_TRUSTSTORE_PASS:="examplestorepass"}
+#SPARK_SSL_PASS=${SPARK_SSL_PASS:="examplekeypass"}
+
+# Values for the local workbook
+WORKBOOK_NAME=${WORKBOOK_NAME:="workbook"}
+WORKBOOK_IP=${WORKBOOK_IP:="r"}
+WORKBOOK_UI_PORT=${WORKBOOK_PORT:="8888"}
 WORKBOOK_VOLUME=${WORKBOOK_VOLUME:="default-vol"}
-WORKBOOK_DEBUG=${WORKBOOK_DEBUG:="--debug"}   # --debug to enable debugging
+WORKBOOK_DEBUG=${WORKBOOK_DEBUG:="--debug"}      # Uncomment this line to enable debug mode
 
-# Settings to allow the workbook and the spark cluster to communicate
-WBSPARK_DRIVER_PORT=${WBSPARK_DRIVER_PORT:=""}
+# Values that allow the workbook and the spark cluster to communicate
+WBSPARK_DRIVER_PORT=${WBSPARK_DRIVER_PORT:="22220"}
 WBSPARK_FILESERVER_PORT=${WBSPARK_FILESERVER_PORT:=""}
 WBSPARK_BLOCKMANAGER_PORT=${WBSPARK_BLOCKMANAGER_PORT:=""}
+WBSPARK_BROADCAST_PORT=${WBSPARK_BROADCAST_PORT:=""}
 WBSPARK_REPLCLASSSERVER_PORT=${WBSPARK_REPLCLASSSERVER_PORT:=""}
 WBSPARK_EXECUTOR_PORT=${WBSPARK_EXECUTOR_PORT:=""}

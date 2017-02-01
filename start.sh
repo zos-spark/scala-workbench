@@ -1,4 +1,4 @@
-#!/bin/bash
+ #!/bin/bash
 # (c) Copyright IBM Corp. 2017.  All Rights Reserved.
 # Distributed under the terms of the Modified BSD License.
 
@@ -9,27 +9,30 @@ if [ ! -z "$1" ]; then
   if [ ! -f $1 ]; then
         echo "File not found!"
         exit 1
-  else
+  else 
     source $1
   fi
-else
+else 
   source $DIR/config
 fi
 
-# Build the Spark configuration, based on the configuration settings.
-# Settings for the Spark cluster on z/OS
-CONFIG=""
+if [ -z "${WORKBOOK_IP:+x}" ]; then
+  echo "Error:WORKBOOK_IP is not set"
+  exit 1
+fi
 
+if [ -z "${WORKBOOK_UI_PORT:+x}" ]; then
+  echo "Error: WORKBOOK_UI_PORT is not set"
+  exit 1
+fi
+
+SPARK_CONF=""
 if [ ! -z "${SPARK_HOST:+x}" ]; then
-  if [  ! -z "${SPARK_PORT:+x}" ]; then
-    CONFIG="$CONFIG --master=spark://${SPARK_HOST}:${SPARK_PORT}"
-  else
-    echo "Error: SPARK_PORT is not set"
+  if [ -z "${SPARK_PORT:+x}" ]; then
+    echo "Error: SPARK_HOST is set, but no SPARK_PORT is set"
     exit 1
   fi
-else
-  echo "Error: SPARK_HOST is not set"
-  exit 1
+  SPARK_CONF="--master=spark://${SPARK_HOST}:${SPARK_PORT}"
 fi
 
 if [ ! -z "${SPARK_CPUS:+x}" ]; then
@@ -40,60 +43,62 @@ if [ ! -z "${SPARK_MEM:+x}" ]; then
   SPARK_CONF="${SPARK_CONF} --conf spark.executor.memory=${SPARK_MEM}"
 fi
 
-CONFIG="$CONFIG SPARK_USER=${SPARK_USER} ${SPARK_ADDITIONAL_CONF}"
-
-# Settings for the local workbook
-if [ ! -z "${WORKBOOK_IP:+x}" ]; then
-   CONFIG="$CONFIG WORKBOOK_IP=${WORKBOOK_IP}"
-else
-  echo "Error: WORKBOOK_IP is not set"
-  exit 1
+if [ ! -z "${SPARK_ADDITIONALCONF:+x}" ]; then
+  SPARK_CONF="${SPARK_CONF} ${SPARK_ADDITIONALCONF}"
 fi
 
-if [ ! -z "${WORKBOOK_PORT:+x}" ]; then
-   CONFIG="$CONFIG WORKBOOK_PORT=${WORKBOOK_PORT}"
-else
-  echo "Error: WORKBOOK_PORT is not set"
-  exit 1
-fi
-
-CONFIG="$CONFIG WORKBOOK_NAME=${WORKBOOK_NAME} WORKBOOK_VOLUME=${WORKBOOK_VOLUME} WORKBOOK_DEBUG=${WORKBOOK_DEBUG}"
-
-# Settings to allow the workbook and the spark cluster to communicate
+WBSPARK_CONF=""
 if [ ! -z "${WBSPARK_DRIVER_PORT:+x}" ]; then
-  CONFIG="$CONFIG --conf spark.driver.port=${WBSPARK_DRIVER_PORT}"
+  WBSPARK_CONF="${WBSPARK_CONF} --conf spark.driver.port=${WBSPARK_DRIVER_PORT}"
 fi
 
 if [ ! -z "${WBSPARK_FILESERVER_PORT:+x}" ]; then
-  CONFIG="$CONFIG --conf spark.fileserver.port=${WBSPARK_FILESERVER_PORT}"
+  WBSPARK_CONF="${WBSPARK_CONF} --conf spark.fileserver.port=${WBSPARK_FILESERVER_PORT}"
 fi
 
 if [ ! -z "${WBSPARK_BLOCKMANAGER_PORT:+x}" ]; then
-  CONFIG="$CONFIG --conf spark.blockmanager.port=${WBSPARK_BLOCKMANAGER_PORT}"
+  WBSPARK_CONF="${WBSPARK_CONF} --conf spark.blockmanager.port=${WBSPARK_BLOCKMANAGER_PORT}"
 fi
 
 if [ ! -z "${WBSPARK_REPLCLASSSERVER_PORT:+x}" ]; then
-  CONFIG="$CONFIG --conf spark.replclassserver.port=${WBSPARK_REPLCLASSSERVER_PORT}"
+  WBSPARK_CONF="${WBSPARK_CONF} --conf spark.replclassserver.port=${WBSPARK_REPLCLASSSERVER_PORT}"
+fi
+
+if [ ! -z "${WBSPARK_BROADCAST_PORT:+x}" ]; then
+  WBSPARK_CONF="${WBSPARK_CONF} --conf spark.broadcast.port=${WBSPARK_BROADCAST_PORT}"
 fi
 
 if [ ! -z "${WBSPARK_EXECUTOR_PORT:+x}" ]; then
-  CONFIG="$CONFIG --conf spark.executor.port=${WBSPARK_EXECUTOR_PORT}"
+  WBSPARK_CONF="${WBSPARK_CONF} --conf spark.executor.port=${WBSPARK_EXECUTOR_PORT}"
+fi
+
+if [ ! -z "${SPARK_SECURITY:+x}" ]; then
+  SPARK_SECURITY_GENERIC="--conf spark.network.sasl.serverAlwaysEncrypt=true --conf spark.ssl.enabled=true --conf spark.ssl.protocol=TLSv1.2 --conf spark.ssl.fs.enabled=true"
+  SPARK_SECURITY_SECRET="--conf spark.authenticate.enableSaslEncryption=true --conf spark.authenticate=true --conf spark.authenticate.secret=${SPARK_SECRET}"
+
+  SPARK_SECURITY_KEYSTORE="--conf spark.ssl.keyStore=${SPARK_KEYSTORE_PATH}/${SPARK_KEYSTORE} --conf spark.ssl.keyStorePassword=${SPARK_KEYSTORE_PASS}"
+  SPARK_SECURITY_TRUSTSTORE="--conf spark.ssl.trustStore=${SPARK_TRUSTSTORE_PATH}/${SPARK_TRUSTSTORE} --conf spark.ssl.trustStorePassword=${SPARK_TRUSTSTORE_PASS}"
+  SPARK_SECURITY_SSL_KEY="--conf spark.ssl.keyPassword=${SPARK_SSL_PASS}"
+
+  SPARK_SECURITY_CONF="${SPARK_SECURITY_GENERIC} ${SPARK_SECURITY_SECRET} ${SPARK_SECURITY_KEYSTORE} ${SPARK_SECURITY_TRUSTSTORE} ${SPARK_SECURITY_SSL_KEY}"
 fi
 
 docker volume create --name $WORKBOOK_VOLUME
 
-SPARK_CONF=${CONFIG} \
-  SPARK_HOST=${SPARK_HOST} \
-  SPARK_PORT=${SPARK_PORT} \
-  SPARK_CPUS=${SPARK_CPUS} \
-  SPARK_MEM=${SPARK_MEM} \
+SPARK_CONF=${SPARK_CONF} \
   SPARK_USER=${SPARK_USER} \
-  WORKBOOK_IP=${WORKBOOK_IP} \
-  WORKBOOK_PORT=${WORKBOOK_PORT} \
   WORKBOOK_NAME=${WORKBOOK_NAME} \
+  WORKBOOK_IP=${WORKBOOK_IP} \
+  WORKBOOK_UI_PORT=${WORKBOOK_PORT} \
   WORKBOOK_VOLUME=${WORKBOOK_VOLUME} \
   WORKBOOK_DEBUG=${WORKBOOK_DEBUG} \
+  SPARK_SECURITY_CONF=${SPARK_SECURITY_CONF} \
+  WBSPARK_CONF=${WBSPARK_CONF} \
   docker-compose -f $DIR/docker-compose.yml -p $WORKBOOK_NAME up -d
 
-#docker exec -u root $WORKBOOK_NAME jupyter toree install --spark_opts="--master=spark://${SPARK_HOST}:${SPARK_PORT} --conf spark.cores.max=$SPARK_CPUS --conf spark.executor.memory=$SPARK_MEM"
-#docker exec -u root $WORKBOOK_NAME jupyter toree install --spark_opts="--master=spark://${SPARK_HOST}:${SPARK_PORT} --conf spark.cores.max=$SPARK_CPUS --conf spark.executor.memory=$SPARK_MEM --jars /home/jovyan/work/dv-jdbc-3.1.jar,/home/jovyan/work/log4j-api-2.6.2.jar,/home/jovyan/work/log4j-core-2.6.2.jar"
+if [ ! -z "${SPARK_SECURITY:+x}" ]; then
+  docker exec -u root ${WORKBOOK_NAME} mkdir -p ${SPARK_TRUSTSTORE_PATH}
+  docker cp ${SPARK_TRUSTSTORE_LOCAL} ${WORKBOOK_NAME}:${SPARK_TRUSTSTORE_PATH}/${SPARK_TRUSTSTORE}
+  docker exec -u root ${WORKBOOK_NAME} mkdir -p ${SPARK_KEYSTORE_PATH}
+  docker cp ${SPARK_KEYSTORE_LOCAL} ${WORKBOOK_NAME}:${SPARK_KEYSTORE_PATH}/${SPARK_KEYSTORE}
+fi

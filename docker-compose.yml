@@ -6,20 +6,18 @@ version: "2"
 services:
   notebook:
     build: .
-    image: zspark202/loz-scala-wb
+    image: zspark/scala-workbench-min
     container_name: ${WORKBOOK_NAME}
     command: >
-      bash -c "start-notebook.sh --port=${WORKBOOK_PORT} --NotebookApp.token='' ${WORKBOOK_DEBUG}"
+      bash -c "start-notebook.sh --port=${WORKBOOK_UI_PORT} --NotebookApp.token='' ${WORKBOOK_DEBUG}"
     network_mode: "host"
     environment:
       IBM_JAVA_OPTIONS: "-Dlog4j.configurationFile=/home/jovyan/work/log4j.properties -Duser.name=${SPARK_USER}"
       JVM_OPT: "-Duser.name=${SPARK_USER}"
       SPARK_USER: ${SPARK_USER}
-      HADOOP_USER_NAME: ""
       SPARK_LOCAL_IP: ${WORKBOOK_IP}
-      SPARK_OPTS: "--master=spark://${SPARK_HOST}:${SPARK_PORT} --conf spark.cores.max=${SPARK_CPUS} --conf spark.executor.memory=${SPARK_MEM}"
-#      USE_HTTPS: "yes"
-#      PASSWORD: ${PASSWORD}
+      SPARK_OPTS: "${SPARK_CONF} ${WBSPARK_CONF} ${SPARK_SECURITY_CONF}"
+      GEN_CERT: "yes"
     volumes:
       - "work:/home/jovyan/work"
 volumes:
