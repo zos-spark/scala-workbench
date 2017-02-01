@@ -1,0 +1,25 @@
+#!/bin/bash
+# (c) Copyright IBM Corp. 2016.  All Rights Reserved.
+# Distributed under the terms of the Modified BSD License.
+
+# Settings for the Spark cluster on z/OS
+SPARK_HOST=${SPARK_HOST:=""}
+SPARK_PORT=${SPARK_PORT:="7077"}
+SPARK_CPUS=${SPARK_CPUS:="2"}
+SPARK_MEM=${SPARK_MEM:="1g"}
+SPARK_USER=${SPARK_USER:="jovyan"}
+SPARK_ADDITIONAL_CONF=${SPARK_ADDITIONAL_CONF:=""}
+
+# Settings for the local workbook
+WORKBOOK_IP=${WORKBOOK_IP:=""}
+WORKBOOK_PORT=${WORKBOOK_PORT:="8888"}
+WORKBOOK_NAME=${WORKBOOK_NAME:=""}
+WORKBOOK_VOLUME=${WORKBOOK_VOLUME:="default-vol"}
+WORKBOOK_DEBUG=${WORKBOOK_DEBUG:="--debug"}   # --debug to enable debugging
+
+# Settings to allow the workbook and the spark cluster to communicate
+WBSPARK_DRIVER_PORT=${WBSPARK_DRIVER_PORT:=""}
+WBSPARK_FILESERVER_PORT=${WBSPARK_FILESERVER_PORT:=""}
+WBSPARK_BLOCKMANAGER_PORT=${WBSPARK_BLOCKMANAGER_PORT:=""}
+WBSPARK_REPLCLASSSERVER_PORT=${WBSPARK_REPLCLASSSERVER_PORT:=""}
+WBSPARK_EXECUTOR_PORT=${WBSPARK_EXECUTOR_PORT:=""}
