@@ -52,11 +52,11 @@ RUN chown -R $NB_USER:users /home/$NB_USER/.jupyter
 # Scala-Workbench Steps #
 ## Setup Java ##
 RUN mkdir -p /opt/ibm/java
-COPY files/ibm-java-s390x-sdk-8.0-3.12.bin /opt/ibm/java/ibm-java-s390x-sdk-8.0-3.12.bin
+COPY files/ibm-java-s390x-sdk-8.0-4.0.bin /opt/ibm/java/ibm-java-s390x-sdk-8.0-4.0.bin
 COPY files/installer.properties.java /opt/ibm/java/installer.properties
 RUN chmod -R 755 /opt/ibm/java
 WORKDIR /opt/ibm/java
-RUN ./ibm-java-s390x-sdk-8.0-3.12.bin -f installer.properties
+RUN ./ibm-java-s390x-sdk-8.0-4.0.bin -f installer.properties
 RUN rm -Rf /usr/lib/jvm/default-java
 RUN mkdir -p /usr/lib/jvm/default-java
 RUN ln -s /opt/ibm/java/* /usr/lib/jvm/default-java

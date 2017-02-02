@@ -34,8 +34,8 @@ An ideal environment for this process is the [IBM LinuxONE Community Cloud](http
 
 ### Download Dependency files
 * Clone the Scala Workbench from https://github.com/zos-spark/scala-workbench (or download the zip file) and locate it on a build system.
-* **IBM Java 8+ 64-bit SDK for Linux on Z**: download the InstallAnywhere as root version from  https://developer.ibm.com/javasdk/downloads
-  * You should have **ibm-java-sdk-8.0.3.22-390x-archive.bin** when the download completes.  Put this file in the scala-workbench/files directory that you have cloned.
+* **IBM Java 8+ 64-bit SDK for Linux on Z**: download the InstallAnywhere as root version from  https://developer.ibm.com/javasdk/downloads/#tab_sdk8
+  * You should have **ibm-java-s390x-sdk-8.0-4.0.bin** when the download completes.  Put this file in the scala-workbench/files directory that you have cloned.
 * **Linux on z Systems 64-bit package for Apache Spark**: download from
 http://www.ibm.com/developerworks/java/jdk/spark/index.html .
   * You should have **IBM_Spark_DK_2.0.2.0_linux_s390x.bin** when the download completes.
@@ -108,3 +108,4 @@ You can verify that the container is running using the docker ps command.  You s
 CONTAINER ID        IMAGE                    COMMAND                  CREATED             STATUS     
 11a64db24526        zspark202/loz-scala-wb   "bash -c 'start-noteb"   19 hours ago        Up 19 hours
 ```
+
