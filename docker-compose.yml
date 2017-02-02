@@ -6,7 +6,7 @@ version: "2"
 services:
   notebook:
     build: .
-    image: zspark/scala-workbench-min
+    image: zspark202/loz-scala-wb
     container_name: ${WORKBOOK_NAME}
     command: >
       bash -c "start-notebook.sh --port=${WORKBOOK_UI_PORT} --NotebookApp.token='' ${WORKBOOK_DEBUG}"
