@@ -34,8 +34,8 @@ An ideal environment for this process is the [IBM LinuxONE Community Cloud](http
 
 ### Download Dependency files
 * Clone the Scala Workbench from https://github.com/zos-spark/scala-workbench (or download the zip file) and locate it on a build system.
-* **IBM Java 8+ 64-bit SDK for Linux on Z**: download the InstallAnywhere as root version from  https://developer.ibm.com/javasdk/downloads/#tab_sdk8
-  * You should have **ibm-java-s390x-sdk-8.0-4.0.bin** when the download completes.  Put this file in the scala-workbench/files directory that you have cloned.
+* **IBM Java 8+ 64-bit SDK for Linux on Z**: download the InstallAnywhere as root version from  https://developer.ibm.com/javasdk/downloads
+  * You should have **ibm-java-sdk-8.0.3.22-390x-archive.bin** when the download completes.  Put this file in the scala-workbench/files directory that you have cloned.
 * **Linux on z Systems 64-bit package for Apache Spark**: download from
 http://www.ibm.com/developerworks/java/jdk/spark/index.html .
   * You should have **IBM_Spark_DK_2.0.2.0_linux_s390x.bin** when the download completes.
@@ -109,3 +109,20 @@ CONTAINER ID        IMAGE                    COMMAND                  CREATED   
 11a64db24526        zspark202/loz-scala-wb   "bash -c 'start-noteb"   19 hours ago        Up 19 hours
 ```
 
+
+## Spark SSL Configuration (Optional)
+Depending on your remote Spark configuration, it may be desired to connect via SSL.  The following configurations are based on the [Spark 2.0.2 SSL Documnetation](https://spark.apache.org/docs/2.0.2/configuration.html#security).  ***Note: the keystore path and trust store path must be the same on both the remote Spark system as well as in the docker container.***
+
+You will need to copy your remote Spark Host's `keystore` and `truststore` files onto your Docker host.
+
+* `SPARK_SECURITY` => set equal to yes if SSL is required.
+* `SPARK_SECRET` => set equal to the remote host `spark.authenticate.secret`.
+* `SPARK_KEYSTORE` => set as the destination name of the keystore (typically, `.keystore`).  This is appended to the end of `SPARK_KEYSTORE_PATH` to create `spark.ssl.keyStore`.
+* `SPARK_KEYSTORE_PATH` => set as the path to the keystore file ***Note: don't add an ending /***
+* `SPARK_KEYSTORE_LOCAL` => set as the local file name of the keystore file (useful for managing more than one container).
+* `SPARK_KEYSTORE_PASS` => set equal to the remote host `spark.ssl.keyStorePassword`.
+* `SPARK_TRUSTSTORE` => set as the destination name of the truststore (typically, `.truststore`).  This is appended to the end of `SPARK_TRUSTSTORE_PATH` to create `spark.ssl.trustStore`.
+* `SPARK_TRUSTSTORE_PATH` => set as the path to the truststore file ***Note: don't add an ending /***
+* `SPARK_TRUSTSTORE_LOCAL` => set as the local file name of the truststore file (useful for managing more than one container).
+* `SPARK_TRUSTSTORE_PASS` => set equal to the remote host `spark.ssl.trustStorePassword`.
+* `SPARK_SSL_PASS` => set equal to the remote host `spark.ssl.keyPassword`.
