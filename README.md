@@ -15,9 +15,9 @@ As per the [Reference Architecture Diagram](https://ibm.box.com/shared/static/xm
 
 * IBM z/OS Platform for Apache Spark
   * [ShopZ - Product Ordering Details](https://www-304.ibm.com/software/shopzseries/ShopzSeries_public.wss)
-  * [Installation Instructions](http://www-03.ibm.com/support/techdocs/atsmastr.nsf/WebIndex/WP102609) for details on how to setup your Spark environment.
+  * [Installation Instructions](https://www.ibm.com/support/knowledgecenter/SSCTFE_1.1.0/com.ibm.azk.v1r1.azklp/azk.htm) for details on how to setup your Spark environment.
 * Docker Environment for Scala Workbench
-  * As per the [Apache Spark component architecture requirements](https://spark.apache.org/docs/0.8.0/cluster-overview.html), a *driver program* should be run close to the worker nodes, preferably on the same local area network. The *driver program* must be network addressable to all nodes in the Spark cluster. **This implies that the target physical or virtual machine for the Scala Workbench must be located within the same network addressable environment as the hosted instance of IBM z/OS Platform for Apache Spark**.
+  * As per the [Apache Spark component architecture requirements](https://spark.apache.org/docs/2.0.2/cluster-overview.html), a *driver program* should be run close to the worker nodes, preferably on the same local area network. The *driver program* must be network addressable to all nodes in the Spark cluster. **This implies that the target physical or virtual machine for the Scala Workbench must be located within the same network addressable environment as the hosted instance of IBM z/OS Platform for Apache Spark**.
   * See the [Docker installation instructions](https://docs.docker.com/engine/installation/) for your target docker environment. **Note: Testing has been done using Docker on Ubuntu (baremetal and VM)**.
     * [Docker Engine](https://docs.docker.com/engine/) 1.12.3+
     * [Docker Compose](https://docs.docker.com/compose/) 1.9.0+
