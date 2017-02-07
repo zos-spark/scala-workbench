@@ -57,7 +57,7 @@ http://www.ibm.com/developerworks/java/jdk/spark/index.html .
 ```
       sudo pip install docker-compose==1.9.0
 ```
-* Add the admin user to the docker group
+* Add the admin user to the docker group.  Note that this is an optional step that allows the administrator to avoid running all Docker commands using sudo.  The administrator must have either sudo capability, or be a member of the Docker group to perform necessary Docker operations for the Scala Workbench.
 ```
       sudo usermod -a -G docker [userid]
 ```
