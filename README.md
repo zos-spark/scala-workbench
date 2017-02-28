@@ -39,8 +39,10 @@ An ideal environment for this process is the [IBM LinuxONE Community Cloud](http
   * You should have **ibm-java-s390x-sdk-8.0.4.0.bin** when the download completes.  Put this file in the scala-workbench/files directory that you have cloned.
 * **Linux on z Systems 64-bit package for Apache Spark**: download from
 http://www.ibm.com/developerworks/java/jdk/spark/index.html .
-  * You should have **IBM_Spark_DK_2.0.2.0_linux_s390x.bin** when the download completes.
+  * You should have **IBM_Spark_DK_2.0.2.0_linux_s390x.bin** when the download completes\*.
   * Put this file in the scala-workbench/files directory as well.
+
+\* IBM currently makes the latest point release for a Spark version available, but not prior versions.  This latest version is not compatible with the Spark 2.0.2 that is currently available on z/OS.  Please contact Joe Bostian, [jbostian@us.ibm.com](mailto:jbostian@us.ibm.com), for a copy of the Linux on z Systems Spark installable required for this build.
 
 ### Configure the Build Platform
 * Install Docker engine
